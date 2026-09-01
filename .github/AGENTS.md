@@ -53,7 +53,7 @@ src/
 
 Esse desenho é uma referência, não uma obrigação de criar todas as pastas. O recurso deve começar com a menor estrutura que mantenha suas responsabilidades claras.
 
-- Prefira configurar `resources/v1` como prefixo comum da aplicação e declarar apenas o nome do recurso no controller. Se isso alterar rotas existentes, faça a migração de forma explícita e atualize os testes.
+- Não configure prefixo global. Cada controller deve declarar explicitamente sua rota completa como `@Controller('v1/<resource>')`, mantendo o versionamento visível no próprio resource. Se isso alterar rotas existentes, faça a migração de forma explícita e atualize os testes.
 - Controllers cuidam apenas do protocolo HTTP: entrada, validação, autenticação/autorização quando aplicável, chamada da camada responsável e mapeamento da resposta.
 - Services do recurso orquestram o caso de uso. Eles não devem conhecer detalhes de HTTP nem acessar clientes externos ou Prisma diretamente quando isso acoplar regra de aplicação à infraestrutura.
 - Use DTOs nas entradas e saídas públicas. Não retorne entidades do Prisma ou payloads de fornecedores diretamente pela API.

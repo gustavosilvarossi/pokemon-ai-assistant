@@ -73,6 +73,16 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## HTTP routes
+
+All public API resources use the `/v1` prefix. The current temporary health endpoint is:
+
+```text
+GET /resources/v1/health
+```
+
+The former starter endpoint `GET /` has been removed and returns `404`.
+
 ## Run tests
 
 ```bash
