@@ -1,6 +1,6 @@
 # Instruções para agentes de código
 
-Estas regras valem para todo o repositório. Antes de implementar uma mudança, leia também `arch.md`, que é a fonte de verdade para o objetivo do produto, os limites entre PokéAPI, Tools e RAG e a ordem incremental de implementação.
+Estas regras valem para todo o repositório. Antes de implementar uma mudança, leia também `arch.md`, na raiz do projeto, que é a fonte de verdade para o objetivo do produto, e `tasks.md`, que define a ordem executável, dependências, responsáveis e critérios de aceite.
 
 ## Princípios de trabalho
 
@@ -8,6 +8,7 @@ Estas regras valem para todo o repositório. Antes de implementar uma mudança, 
 - Priorize código legível e explícito: nomes em inglês que revelem intenção, funções curtas, fluxo simples e responsabilidades bem delimitadas.
 - Não crie abstrações, camadas, dependências ou configurações para uma necessidade apenas hipotética. A arquitetura deve crescer junto com funcionalidades reais.
 - Não implemente itens futuros do roteiro de `arch.md` sem que a tarefa atual os exija.
+- Ao trabalhar no roadmap, atualize o status da tarefa correspondente em `tasks.md`; não marque uma tarefa como concluída antes de executar seus critérios de aceite e registrar pendências relevantes.
 - Reutilize os padrões já presentes antes de introduzir um padrão novo. Quando uma decisão arquitetural nova for necessária, registre-a objetivamente na documentação relevante.
 - Não altere segredos ou versiona arquivos `.env`. Forneça apenas exemplos sem valores sensíveis quando necessário.
 
@@ -80,8 +81,10 @@ Exponha esses detalhes por contratos pequenos quando isso reduzir acoplamento ou
 
 ## Prisma e PostgreSQL
 
-- O schema fica em `prisma/schema.prisma`; configuração do Prisma fica em `prisma.config.ts`; código gerado fica em `generated/prisma/` e nunca deve ser editado manualmente.
-- Mantenha `prisma` e `@prisma/client` na mesma versão. No Prisma 7, conexões PostgreSQL em runtime exigem um driver adapter, como `@prisma/adapter-pg`; adicione-o somente quando o `PrismaService` for implementado.
+- O schema fica em `prisma/schema.prisma`; configuração e URL do datasource ficam em `prisma.config.ts`; o client gerado fica em `generated/prisma/` e nunca deve ser editado ou versionado manualmente.
+- Mantenha `prisma` e `@prisma/client` fixados na mesma versão. O projeto usa Prisma 7.10.0 e o generator `prisma-client`; importe o client do caminho gerado quando o `PrismaService` for implementado.
+- Toda instanciação de `PrismaClient` deve receber um driver adapter compatível, como `@prisma/adapter-pg`; não coloque `url` no datasource de `schema.prisma`.
+- O override de `deepmerge-ts` para 8.0.2 corrige GHSA-ggr8-5vv4-36mx. Remova-o somente quando `@prisma/config` adotar uma versão corrigida e `npm audit` continuar limpo sem o override.
 - Mantenha Prisma e consultas dentro da infraestrutura. Controllers não fazem consultas, e detalhes de persistência não devem vazar para respostas HTTP.
 - Modele nomes e relações de forma clara. Inclua constraints, índices e unicidade coerentes com as regras de negócio.
 - Se mudar o schema, inclua uma migration com nome descritivo e regenere o client. Não reescreva migrations já aplicadas sem solicitação explícita.

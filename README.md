@@ -23,13 +23,42 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Pokémon AI Assistant API built with NestJS 12, TypeScript, Prisma, Ollama and RAG.
 
 ## Project setup
+
+### Requirements
+
+- Node.js 24.20.0 (use `nvm use` with the version declared in `.nvmrc`)
+- npm 11+
+- Prisma ORM 7.10.0 (CLI and Client are pinned to the same exact version)
 
 ```bash
 $ npm install
 ```
+
+Copy `.env.example` to `.env` and replace only the values required by your environment. Development and production require `DATABASE_URL`; tests use an isolated placeholder and do not connect unless an integration explicitly needs the database.
+
+The application validates these settings during startup:
+
+| Variable                  | Default                     | Required                   |
+| ------------------------- | --------------------------- | -------------------------- |
+| `NODE_ENV`                | `development`               | No                         |
+| `PORT`                    | `3000`                      | No                         |
+| `DATABASE_URL`            | —                           | Development and production |
+| `OLLAMA_BASE_URL`         | `http://127.0.0.1:11434`    | No                         |
+| `OLLAMA_CHAT_MODEL`       | `llama3.2`                  | No                         |
+| `OLLAMA_EMBEDDING_MODEL`  | `nomic-embed-text`          | No                         |
+| `OLLAMA_TIMEOUT_MS`       | `60000`                     | No                         |
+| `POKEAPI_BASE_URL`        | `https://pokeapi.co/api/v2` | No                         |
+| `POKEAPI_TIMEOUT_MS`      | `10000`                     | No                         |
+| `RAG_TOP_K`               | `5`                         | No                         |
+| `RAG_CHUNK_SIZE`          | `1000`                      | No                         |
+| `RAG_CHUNK_OVERLAP`       | `200`                       | No                         |
+| `CHAT_MAX_MESSAGE_LENGTH` | `4000`                      | No                         |
+| `TOOL_MAX_ROUNDS`         | `5`                         | No                         |
+
+`OLLAMA_HOST` remains accepted as a compatibility alias for `OLLAMA_BASE_URL`.
 
 ## Compile and run the project
 
@@ -52,6 +81,9 @@ $ npm run test
 
 # e2e tests
 $ npm run test:e2e
+
+# integration tests
+$ npm run test:integration
 
 # test coverage
 $ npm run test:cov

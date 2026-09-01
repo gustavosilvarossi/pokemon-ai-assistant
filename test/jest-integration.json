@@ -3,7 +3,7 @@
   "rootDir": ".",
   "testEnvironment": "node",
   "extensionsToTreatAsEsm": [".ts"],
-  "testRegex": ".e2e-spec.ts$",
+  "testRegex": ".integration-spec.ts$",
   "transform": {
     "^.+\\.ts$": [
       "ts-jest",
