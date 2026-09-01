@@ -49,6 +49,7 @@ The application validates these settings during startup:
 | `OLLAMA_BASE_URL`         | `http://127.0.0.1:11434`    | No                         |
 | `OLLAMA_CHAT_MODEL`       | `llama3.2`                  | No                         |
 | `OLLAMA_EMBEDDING_MODEL`  | `nomic-embed-text`          | No                         |
+| `OLLAMA_TEMPERATURE`      | `0`                         | No                         |
 | `OLLAMA_TIMEOUT_MS`       | `60000`                     | No                         |
 | `POKEAPI_BASE_URL`        | `https://pokeapi.co/api/v2` | No                         |
 | `POKEAPI_TIMEOUT_MS`      | `10000`                     | No                         |
@@ -59,6 +60,8 @@ The application validates these settings during startup:
 | `TOOL_MAX_ROUNDS`         | `5`                         | No                         |
 
 `OLLAMA_HOST` remains accepted as a compatibility alias for `OLLAMA_BASE_URL`.
+
+The infrastructure module `LlmModule` exports `LlmService`, which communicates with Ollama through LangChain without depending on HTTP, Prisma or PokéAPI. Automated tests replace the model client with a local fake. Use `npm run test:ollama` only when you intentionally want to call the configured Ollama instance.
 
 ## Compile and run the project
 
@@ -75,7 +78,7 @@ $ npm run start:prod
 
 ## HTTP routes
 
-All public API resources use the `/v1` prefix. The current temporary health endpoint is:
+Each public API controller declares its complete `/resources/v1/<resource>` route. The current temporary health endpoint is:
 
 ```text
 GET /resources/v1/health
@@ -94,6 +97,9 @@ $ npm run test:e2e
 
 # integration tests
 $ npm run test:integration
+
+# optional manual test against the configured local Ollama
+$ npm run test:ollama
 
 # test coverage
 $ npm run test:cov

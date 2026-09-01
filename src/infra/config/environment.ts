@@ -9,6 +9,7 @@ export interface EnvironmentVariables {
   OLLAMA_BASE_URL: string;
   OLLAMA_CHAT_MODEL: string;
   OLLAMA_EMBEDDING_MODEL: string;
+  OLLAMA_TEMPERATURE: number;
   OLLAMA_TIMEOUT_MS: number;
   POKEAPI_BASE_URL: string;
   POKEAPI_TIMEOUT_MS: number;
@@ -71,6 +72,30 @@ function readInteger(
 
   if (!Number.isInteger(value) || value < minimum || value > maximum) {
     errors.push(`${key} must be an integer between ${minimum} and ${maximum}`);
+    return defaultValue;
+  }
+
+  return value;
+}
+
+function readNumber(
+  environment: Record<string, unknown>,
+  key: string,
+  defaultValue: number,
+  errors: string[],
+  minimum: number,
+  maximum: number,
+): number {
+  const rawValue = environment[key] ?? defaultValue;
+  const value =
+    typeof rawValue === 'number'
+      ? rawValue
+      : typeof rawValue === 'string'
+        ? Number(rawValue.trim())
+        : Number.NaN;
+
+  if (!Number.isFinite(value) || value < minimum || value > maximum) {
+    errors.push(`${key} must be a number between ${minimum} and ${maximum}`);
     return defaultValue;
   }
 
@@ -175,6 +200,14 @@ export function validateEnvironment(
       'OLLAMA_EMBEDDING_MODEL',
       errors,
       'nomic-embed-text',
+    ),
+    OLLAMA_TEMPERATURE: readNumber(
+      environment,
+      'OLLAMA_TEMPERATURE',
+      0,
+      errors,
+      0,
+      2,
     ),
     OLLAMA_TIMEOUT_MS: readInteger(
       environment,

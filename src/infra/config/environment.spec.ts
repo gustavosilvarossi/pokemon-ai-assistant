@@ -14,6 +14,7 @@ describe('validateEnvironment', () => {
       OLLAMA_BASE_URL: 'http://127.0.0.1:11434',
       OLLAMA_CHAT_MODEL: 'llama3.2',
       OLLAMA_EMBEDDING_MODEL: 'nomic-embed-text',
+      OLLAMA_TEMPERATURE: 0,
       RAG_TOP_K: 5,
     });
   });
@@ -56,6 +57,7 @@ describe('validateEnvironment', () => {
   it.each([
     [{ NODE_ENV: 'test', PORT: 'invalid' }, 'PORT'],
     [{ NODE_ENV: 'test', OLLAMA_BASE_URL: 'file:///tmp' }, 'OLLAMA_BASE_URL'],
+    [{ NODE_ENV: 'test', OLLAMA_TEMPERATURE: '2.1' }, 'OLLAMA_TEMPERATURE'],
     [
       { NODE_ENV: 'test', RAG_CHUNK_SIZE: '200', RAG_CHUNK_OVERLAP: '200' },
       'RAG_CHUNK_OVERLAP',
