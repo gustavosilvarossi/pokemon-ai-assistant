@@ -99,6 +99,16 @@ $ npm run test:integration
 $ npm run test:cov
 ```
 
+## Quality checks
+
+Run the same validation pipeline used by CI:
+
+```bash
+$ npm run check
+```
+
+The command validates and generates Prisma Client, checks formatting and lint without modifying files, runs unit, integration and e2e tests, builds the application and audits dependencies. Use `npm run format` or `npm run lint:fix` when you intentionally want automatic fixes.
+
 ## Deployment
 
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
